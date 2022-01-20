@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.perfilnet.bankslip.api.assembler.BankSlipSummaryModelAssembler;
 import br.com.perfilnet.bankslip.api.model.BankSlipSummaryModel;
+import br.com.perfilnet.bankslip.domain.filter.BankSlipFilter;
 import br.com.perfilnet.bankslip.domain.model.BankSlip;
 import br.com.perfilnet.bankslip.domain.service.BankSlipService;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,8 @@ public class BankSlipController {
 	private final BankSlipSummaryModelAssembler bankSlipSummaryModelAssembler;
 
 	@GetMapping
-	public ResponseEntity<PagedModel<BankSlipSummaryModel>> getAll(Pageable pageable) {
-		var pagedBankSlips = bankSlipService.getAll(pageable);
+	public ResponseEntity<PagedModel<BankSlipSummaryModel>> getAll(BankSlipFilter filter, Pageable pageable) {
+		var pagedBankSlips = bankSlipService.getAll(filter, pageable);
 		var bankSlipsModel = pagedResourcesAssembler.toModel(pagedBankSlips, bankSlipSummaryModelAssembler);
 
 		return ResponseEntity.ok(bankSlipsModel);

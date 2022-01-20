@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 
+import br.com.perfilnet.bankslip.domain.filter.BankSlipFilter;
 import br.com.perfilnet.bankslip.domain.model.BankSlip;
 import br.com.perfilnet.bankslip.domain.repository.BankSlipRepository;
 import br.com.perfilnet.bankslip.infrastructure.repository.spec.BankSlipSpec;
@@ -35,8 +37,12 @@ public class BankSlipService {
 
 	private final ProductService productService;
 
-	public Page<BankSlip> getAll(Pageable pageable) {
-		return bankSlipRepository.findAll(BankSlipSpec.filter(), pageable);
+	public Page<BankSlip> getAll(BankSlipFilter filter, Pageable pageable) {
+		return bankSlipRepository.findAll(BankSlipSpec.filter(filter), pageable);
+	}
+	
+	public List<BankSlip> filter(BankSlipFilter filter) {
+		return bankSlipRepository.findAll(BankSlipSpec.filter(filter));
 	}
 
 	@Transactional
